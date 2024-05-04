@@ -1,0 +1,176 @@
+openapi: 3.0.0
+info:
+  title: NswagDemo
+  version: V1
+paths:
+  /customer:
+    post:
+      tags:
+        - customer
+      summary: Add Customer
+      description: Add Customer
+      operationId: AddCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCustomerRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddCustomerResponse'
+  '/customer/{customerId}':
+    get:
+      summary: Customer Details
+      operationId: GetCustomerDetail
+      description: |
+        Get Customer Detail
+      tags:
+        - customer
+      parameters:
+        - name: customerId
+          in: path
+          description: customerId required to fetch customer details
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCustomerDetailResponse'
+    delete:
+      summary: Delete Customer
+      operationId: DeleteCustomerById
+      description: |
+        Delete Customer By id
+      tags:
+        - customer
+      parameters:
+        - name: customerId
+          in: path
+          description: customerId required to delete customer details
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteCustomerResponse'
+    put:
+      tags:
+        - customer
+      summary: Update Customer
+      description: Update Customer
+      operationId: EditCustomer
+      parameters:
+        - name: customerId
+          in: path
+          description: customerId required to fetch
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditCustomerRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditCustomerResponse'
+components:
+  schemas:
+    Wrapper:
+      type: object
+      properties:
+        isError:
+          type: boolean
+        message:
+          type: string
+        exceptionMessage:
+          type: string
+          nullable: true
+    AddCustomerRequest:
+      type: object
+      properties:
+        FirstName:
+          type: string
+        LastName:
+          type: string
+        DOB:
+          type: string
+          format: date-time
+        Gender:
+          type: string
+        Email:
+          type: string
+      additionalProperties: false
+    AddCustomerResponse:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Wrapper'
+        - type: object
+      properties:
+        Success:
+          type: boolean
+    GetCustomerDetailResponse:
+      allOf:
+        - $ref: '#/components/schemas/Wrapper'
+        - type: object
+          properties:
+            result:
+              $ref: '#/components/schemas/CustomerSummary'
+    CustomerSummary:
+      properties:
+        CustomerId:
+          type: string
+        FirstName:
+          type: string
+        LastName:
+          type: string
+        Gender:
+          type: string
+        Email:
+          type: string
+    EditCustomerRequest:
+      type: object
+      properties:
+        FirstName:
+          type: string
+        LastName:
+          type: string
+        DOB:
+          type: string
+          format: date-time
+        Gender:
+          type: string
+        Email:
+          type: string
+    EditCustomerResponse:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Wrapper'
+        - type: object
+      properties:
+        Success:
+          type: boolean
+    DeleteCustomerResponse:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Wrapper'
+        - type: object
+      properties:
+        Success:
+          type: boolean
